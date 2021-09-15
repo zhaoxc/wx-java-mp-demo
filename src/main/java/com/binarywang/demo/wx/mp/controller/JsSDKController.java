@@ -42,23 +42,23 @@ public class JsSDKController {
     public String addMenu(){
         WxMpMenuService mpMenuService = mpService.getMenuService();
         WxMenu wxMenu = new WxMenu();
-        List<WxMenuButton> buttons = new ArrayList<>();
-        WxMenuButton button = new WxMenuButton();
-        button.setName("发票录入");
-        button.setUrl("https://www.baidu.com");
-        button.setType("view");
-        buttons.add(button);
+        List<WxMenuButton> button = new ArrayList<>();
+        WxMenuButton button1 = new WxMenuButton();
+        button1.setName("发票录入");
+        button1.setUrl("https://www.baidu.com");
+        button1.setType("view");
+        button.add(button1);
 
-        button = new WxMenuButton();
-        button.setName("实名认证");
-        button.setUrl("https://163.com");
-        button.setType("view");
-        buttons.add(button);
-        wxMenu.setButtons(buttons);
+        button1 = new WxMenuButton();
+        button1.setName("实名认证");
+        button1.setUrl("https://163.com");
+        button1.setType("view");
+        button.add(button1);
+        wxMenu.setButtons(button);
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.setPrettyPrinting();
         Gson gson = gsonBuilder.create();
-
+/*
 String menujson = "{\n" +
         "    \"button\": [\n" +
         "        {\n" +
@@ -82,11 +82,11 @@ String menujson = "{\n" +
         "            ]\n" +
         "        }\n" +
         "    ]\n" +
-        "}";
-        System.out.println(gson.toJson(menujson));
+        "}";*/
+        System.out.println(gson.toJson(wxMenu));
 
       try {
-            mpMenuService.menuCreate(menujson);
+            mpMenuService.menuCreate(wxMenu);
         } catch (WxErrorException e) {
             e.printStackTrace();
         }
