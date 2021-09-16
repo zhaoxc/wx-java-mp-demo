@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    <style>
+        .button{
+            margin: 30px auto;
+            width: 400px;
+            height: 500px;
+            text-align: center;
+
+        }
+    </style>
+    <script src="http://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+</head>
+<body>
+<script>
+    wx.config({
+        debug: false,
+        appId: '[[${jsapi.appId}]]',
+        timestamp: '[[${jsapi.timestamp}]]',
+        nonceStr: '[[${jsapi.nonceStr}]]',
+        signature: '[[${jsapi.signature}]]',
+        jsApiList: [
+            'checkJsApi',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage',
+            'onMenuShareQQ',
+            'onMenuShareWeibo',
+            'onMenuShareQZone',
+            'hideMenuItems',
+            'showMenuItems',
+            'hideAllNonBaseMenuItem',
+            'showAllNonBaseMenuItem',
+            'translateVoice',
+            'startRecord',
+            'stopRecord',
+            'onVoiceRecordEnd',
+            'playVoice',
+            'onVoicePlayEnd',
+            'pauseVoice',
+            'stopVoice',
+            'uploadVoice',
+            'downloadVoice',
+            'chooseImage',
+            'previewImage',
+            'uploadImage',
+            'downloadImage',
+            'getNetworkType',
+            'openLocation',
+            'getLocation',
+            'hideOptionMenu',
+            'showOptionMenu',
+            'closeWindow',
+            'scanQRCode',
+            'chooseWXPay',
+            'openProductSpecificView',
+            'addCard',
+            'chooseCard',
+            'openCard'
+        ]
+    });
+
+    wx.ready(function () {
+        wx.checkJsApi({
+            jsApiList: [
+                'getLocation'
+            ],
+            success: function (res) {
+                 alert(JSON.stringify(res));
+                // alert(JSON.stringify(res.checkResult.getLocation));
+                if (res.checkResult.getLocation == false) {
+                    alert('你的微信版本太低，不支持微信JS接口，请升级到最新的微信版本！');
+                    return;
+                }
+            }
+        });
+
+
+      /*  wx.scanQRCode({
+            needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+            scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+            success: function (res) {
+                var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                alert(result);
+            }
+        });*/
+    });
+
+    //检查网络
+   function checknet() {
+       // config信息验证后会执行ready方法，所有接口调用都必须在config接口获得结果之后，config是一个客户端的异步操作，所以如果需要在页面加载时就调用相关接口，则须把相关接口放在ready函数中调用来确保正确执行。对于用户触发时才调用的接口，则可以直接调用，不需要放在ready函数中。
+       wx.getNetworkType({
+           success: function (res) {
+               var networkType = res.networkType; // 返回网络类型2g，3g，4g，wifi
+               alert(networkType);
+           }
+       });
+   }
+
+       function scanCode() {
+           wx.scanQRCode({
+               needResult: 1, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+               scanType: ["qrCode", "barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+               success: function (res) {
+                   var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                   alert(result);
+               }
+           });
+       }
+       //获取地理位置
+      function getgps() {
+          wx.getLocation({
+              type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+              success: function (res) {
+                  var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                  var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                  var speed = res.speed; // 速度，以米/每秒计
+                  var accuracy = res.accuracy; // 位置精度
+                  alert(latitude +"," +longitude +"," +speed +"," +accuracy);
+              },
+              fail:function (res) {
+                  alert("失败了");
+              }
+          });
+   }
+
+
+</script>
+    <div class="button">
+        <button onclick="checknet()">检查网络</button>
+        <button onclick="scanCode()">扫一扫</button>
+        <button onclick="getgps()">获取地理位置</button>
+    </div>
+
+</body>
+</html>

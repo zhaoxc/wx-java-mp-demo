@@ -2,6 +2,7 @@ package com.binarywang.demo.wx.mp.controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import me.chanjar.weixin.common.bean.WxJsapiSignature;
 import me.chanjar.weixin.common.bean.menu.WxMenu;
 import me.chanjar.weixin.common.bean.menu.WxMenuButton;
 import me.chanjar.weixin.common.error.WxErrorException;
@@ -9,6 +10,7 @@ import me.chanjar.weixin.mp.api.WxMpMenuService;
 import me.chanjar.weixin.mp.api.WxMpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -91,5 +93,19 @@ String menujson = "{\n" +
             e.printStackTrace();
         }
         return "sucess";
+    }
+
+    @RequestMapping("checkJsApi")
+    public String checkJsApi(Model model){
+
+        WxJsapiSignature wxJsapiSignature = null;
+        try {
+            wxJsapiSignature = mpService.createJsapiSignature("http://invoice.nat123.net/checkJsApi");
+        } catch (WxErrorException e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("jsapi",wxJsapiSignature);
+        //public WxJsapiSignature createJsapiSignature(String url) throws WxErrorException;
+        return "checkJsApi";
     }
 }
